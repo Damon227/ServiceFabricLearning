@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0 - PPT", "0 - PPT", "{36DBC52B-99D3-4B4D-8D04-E67A26D5B45B}"
 	ProjectSection(SolutionItems) = preProject
 		PPT\Service Fabric —— Session 1.pptx = PPT\Service Fabric —— Session 1.pptx
+		PPT\Service Fabric —— Session 2.pptx = PPT\Service Fabric —— Session 2.pptx
 	EndProjectSection
 EndProject
 Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "CounterDemo", "CounterDemo\CounterDemo.sfproj", "{112EC4F6-5ACD-410C-A0A5-CAF7DAE1144E}"
@@ -17,6 +18,14 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CounterStateless.Interfaces", "CounterStateless.Interfaces\CounterStateless.Interfaces.csproj", "{4DC838DD-DAE6-4DCB-AE74-91CD83EE44E7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CounterStatelessClient", "CounterStatelessClient\CounterStatelessClient.csproj", "{73758FFF-9C0A-4FBD-B6F2-7E32CF60EA15}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - StatefulCounterDemo", "2 - StatefulCounterDemo", "{FFC7A350-6792-4F97-A797-509D6A21971B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CounterStateful.Interfaces", "CounterStateful.Interfaces\CounterStateful.Interfaces.csproj", "{38E22D2D-BFC0-43B7-A372-FD8F68D155A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CounterStateful", "CounterStateful\CounterStateful.csproj", "{7D0F1173-5DFC-484A-BCA8-5970E9A31A0C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CounterStatefulClient", "CounterStatefulClient\CounterStatefulClient.csproj", "{265DD830-3E22-4FAD-B687-9A655B6696D3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,14 +65,39 @@ Global
 		{73758FFF-9C0A-4FBD-B6F2-7E32CF60EA15}.Release|Any CPU.Build.0 = Release|Any CPU
 		{73758FFF-9C0A-4FBD-B6F2-7E32CF60EA15}.Release|x64.ActiveCfg = Release|Any CPU
 		{73758FFF-9C0A-4FBD-B6F2-7E32CF60EA15}.Release|x64.Build.0 = Release|Any CPU
+		{38E22D2D-BFC0-43B7-A372-FD8F68D155A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38E22D2D-BFC0-43B7-A372-FD8F68D155A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38E22D2D-BFC0-43B7-A372-FD8F68D155A9}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{38E22D2D-BFC0-43B7-A372-FD8F68D155A9}.Debug|x64.Build.0 = Debug|Any CPU
+		{38E22D2D-BFC0-43B7-A372-FD8F68D155A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38E22D2D-BFC0-43B7-A372-FD8F68D155A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38E22D2D-BFC0-43B7-A372-FD8F68D155A9}.Release|x64.ActiveCfg = Release|Any CPU
+		{38E22D2D-BFC0-43B7-A372-FD8F68D155A9}.Release|x64.Build.0 = Release|Any CPU
+		{7D0F1173-5DFC-484A-BCA8-5970E9A31A0C}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{7D0F1173-5DFC-484A-BCA8-5970E9A31A0C}.Debug|x64.ActiveCfg = Debug|x64
+		{7D0F1173-5DFC-484A-BCA8-5970E9A31A0C}.Debug|x64.Build.0 = Debug|x64
+		{7D0F1173-5DFC-484A-BCA8-5970E9A31A0C}.Release|Any CPU.ActiveCfg = Release|x64
+		{7D0F1173-5DFC-484A-BCA8-5970E9A31A0C}.Release|x64.ActiveCfg = Release|x64
+		{7D0F1173-5DFC-484A-BCA8-5970E9A31A0C}.Release|x64.Build.0 = Release|x64
+		{265DD830-3E22-4FAD-B687-9A655B6696D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{265DD830-3E22-4FAD-B687-9A655B6696D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{265DD830-3E22-4FAD-B687-9A655B6696D3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{265DD830-3E22-4FAD-B687-9A655B6696D3}.Debug|x64.Build.0 = Debug|Any CPU
+		{265DD830-3E22-4FAD-B687-9A655B6696D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{265DD830-3E22-4FAD-B687-9A655B6696D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{265DD830-3E22-4FAD-B687-9A655B6696D3}.Release|x64.ActiveCfg = Release|Any CPU
+		{265DD830-3E22-4FAD-B687-9A655B6696D3}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{112EC4F6-5ACD-410C-A0A5-CAF7DAE1144E} = {9B73F5B9-2D3F-4913-91FF-D68181D80FB4}
+		{112EC4F6-5ACD-410C-A0A5-CAF7DAE1144E} = {FFC7A350-6792-4F97-A797-509D6A21971B}
 		{C65C2DBD-A119-4C69-B4D8-2A5938D15E34} = {9B73F5B9-2D3F-4913-91FF-D68181D80FB4}
 		{4DC838DD-DAE6-4DCB-AE74-91CD83EE44E7} = {9B73F5B9-2D3F-4913-91FF-D68181D80FB4}
 		{73758FFF-9C0A-4FBD-B6F2-7E32CF60EA15} = {9B73F5B9-2D3F-4913-91FF-D68181D80FB4}
+		{38E22D2D-BFC0-43B7-A372-FD8F68D155A9} = {FFC7A350-6792-4F97-A797-509D6A21971B}
+		{7D0F1173-5DFC-484A-BCA8-5970E9A31A0C} = {FFC7A350-6792-4F97-A797-509D6A21971B}
+		{265DD830-3E22-4FAD-B687-9A655B6696D3} = {FFC7A350-6792-4F97-A797-509D6A21971B}
 	EndGlobalSection
 EndGlobal

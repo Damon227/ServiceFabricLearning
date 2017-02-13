@@ -2,7 +2,7 @@
 // Solution         : ServiceFabricLearning
 // Project          : CounterStateful
 // File             : CounterStateful.cs
-// Created          : 2017-02-07  5:50 PM
+// Created          : 2017-02-08  1:27 PM
 // ***********************************************************************
 // <copyright>
 //     Copyright © 2016 Kolibre Credit Team. All rights reserved.
@@ -36,6 +36,8 @@ namespace CounterStateful
 
         public async Task<string> CountAsync()
         {
+            await Task.Delay(TimeSpan.FromSeconds(3));
+
             IReliableDictionary<string, int> states = await StateManager.GetOrAddAsync<IReliableDictionary<string, int>>("states");
             IReliableQueue<string> events = await StateManager.GetOrAddAsync<IReliableQueue<string>>("events");
             int number;
@@ -45,12 +47,31 @@ namespace CounterStateful
                 ConditionalValue<int> counter = await states.TryGetValueAsync(transaction, "Counter");
                 number = counter.HasValue ? counter.Value : 0;
                 number++;
+            }
 
+            await Task.Delay(TimeSpan.FromSeconds(3));
+
+            using (ITransaction transaction = StateManager.CreateTransaction())
+            {
                 await states.SetAsync(transaction, "Counter", number);
                 await events.EnqueueAsync(transaction, $"{DateTime.UtcNow:O} The Counter is {number}.");
 
                 await transaction.CommitAsync();
             }
+
+            //using (ITransaction transaction = StateManager.CreateTransaction())
+            //{
+            //    ConditionalValue<int> counter = await states.TryGetValueAsync(transaction, "Counter");
+            //    number = counter.HasValue ? counter.Value : 0;
+            //    number++;
+
+            //    await Task.Delay(TimeSpan.FromSeconds(3));
+
+            //    await states.SetAsync(transaction, "Counter", number);
+            //    await events.EnqueueAsync(transaction, $"{DateTime.UtcNow:O} The Counter is {number}.");
+
+            //    await transaction.CommitAsync();
+            //}
 
             return $"Current number is {number}, from partition {Context.PartitionId} and replica {Context.ReplicaId}";
         }
