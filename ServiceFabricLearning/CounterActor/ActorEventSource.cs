@@ -1,9 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// ***********************************************************************
+// Solution         : ServiceFabricLearning
+// Project          : CounterActor
+// File             : ActorEventSource.cs
+// Created          : 2017-02-14  2:36 PM
+// ***********************************************************************
+// <copyright>
+//     Copyright © 2016 Kolibre Credit Team. All rights reserved.
+// </copyright>
+// ***********************************************************************
+
+using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Tracing;
-using System.Fabric;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.ServiceFabric.Actors.Runtime;
 
@@ -22,9 +30,12 @@ namespace CounterActor
         }
 
         // Instance constructor is private to enforce singleton semantics
-        private ActorEventSource() : base() { }
+        private ActorEventSource()
+        {
+        }
 
         #region Keywords
+
         // Event keywords can be used to categorize events. 
         // Each keyword is a bit flag. A single event can be associated with multiple keywords (via EventAttribute.Keywords property).
         // Keywords must be defined as a public class named 'Keywords' inside EventSource that uses them.
@@ -32,9 +43,11 @@ namespace CounterActor
         {
             public const EventKeywords HostInitialization = (EventKeywords)0x1L;
         }
+
         #endregion
 
         #region Events
+
         // Define an instance method for each event you want to record and apply an [Event] attribute to it.
         // The method name is the name of the event.
         // Pass any parameters you want to record with the event (only primitive integer types, DateTime, Guid & string are allowed).
@@ -46,27 +59,29 @@ namespace CounterActor
         [NonEvent]
         public void Message(string message, params object[] args)
         {
-            if (this.IsEnabled())
+            if (IsEnabled())
             {
                 string finalMessage = string.Format(message, args);
                 Message(finalMessage);
             }
         }
 
-        private const int MessageEventId = 1;
-        [Event(MessageEventId, Level = EventLevel.Informational, Message = "{0}")]
+        private const int MESSAGE_EVENT_ID = 1;
+
+        [Event(MESSAGE_EVENT_ID, Level = EventLevel.Informational, Message = "{0}")]
         public void Message(string message)
         {
-            if (this.IsEnabled())
+            if (IsEnabled())
             {
-                WriteEvent(MessageEventId, message);
+                WriteEvent(MESSAGE_EVENT_ID, message);
             }
         }
 
         [NonEvent]
+        [SuppressMessage("ReSharper", "MergeSequentialChecks")]
         public void ActorMessage(Actor actor, string message, params object[] args)
         {
-            if (this.IsEnabled()
+            if (IsEnabled()
                 && actor.Id != null
                 && actor.ActorService != null
                 && actor.ActorService.Context != null
@@ -90,37 +105,38 @@ namespace CounterActor
         // For very high-frequency events it might be advantageous to raise events using WriteEventCore API.
         // This results in more efficient parameter handling, but requires explicit allocation of EventData structure and unsafe code.
         // To enable this code path, define UNSAFE conditional compilation symbol and turn on unsafe code support in project properties.
-        private const int ActorMessageEventId = 2;
-        [Event(ActorMessageEventId, Level = EventLevel.Informational, Message = "{9}")]
+        private const int ACTOR_MESSAGE_EVENT_ID = 2;
+
+        [Event(ACTOR_MESSAGE_EVENT_ID, Level = EventLevel.Informational, Message = "{9}")]
         private
 #if UNSAFE
             unsafe
 #endif
             void ActorMessage(
-            string actorType,
-            string actorId,
-            string applicationTypeName,
-            string applicationName,
-            string serviceTypeName,
-            string serviceName,
-            Guid partitionId,
-            long replicaOrInstanceId,
-            string nodeName,
-            string message)
+                string actorType,
+                string actorId,
+                string applicationTypeName,
+                string applicationName,
+                string serviceTypeName,
+                string serviceName,
+                Guid partitionId,
+                long replicaOrInstanceId,
+                string nodeName,
+                string message)
         {
 #if !UNSAFE
             WriteEvent(
-                    ActorMessageEventId,
-                    actorType,
-                    actorId,
-                    applicationTypeName,
-                    applicationName,
-                    serviceTypeName,
-                    serviceName,
-                    partitionId,
-                    replicaOrInstanceId,
-                    nodeName,
-                    message);
+                ACTOR_MESSAGE_EVENT_ID,
+                actorType,
+                actorId,
+                applicationTypeName,
+                applicationName,
+                serviceTypeName,
+                serviceName,
+                partitionId,
+                replicaOrInstanceId,
+                nodeName,
+                message);
 #else
                 const int numArgs = 10;
                 fixed (char* pActorType = actorType, pActorId = actorId, pApplicationTypeName = applicationTypeName, pApplicationName = applicationName, pServiceTypeName = serviceTypeName, pServiceName = serviceName, pNodeName = nodeName, pMessage = message)
@@ -142,15 +158,18 @@ namespace CounterActor
 #endif
         }
 
-        private const int ActorHostInitializationFailedEventId = 3;
-        [Event(ActorHostInitializationFailedEventId, Level = EventLevel.Error, Message = "Actor host initialization failed", Keywords = Keywords.HostInitialization)]
+        private const int ACTOR_HOST_INITIALIZATION_FAILED_EVENT_ID = 3;
+
+        [Event(ACTOR_HOST_INITIALIZATION_FAILED_EVENT_ID, Level = EventLevel.Error, Message = "Actor host initialization failed", Keywords = Keywords.HostInitialization)]
         public void ActorHostInitializationFailed(string exception)
         {
-            WriteEvent(ActorHostInitializationFailedEventId, exception);
+            WriteEvent(ACTOR_HOST_INITIALIZATION_FAILED_EVENT_ID, exception);
         }
+
         #endregion
 
         #region Private Methods
+
 #if UNSAFE
             private int SizeInBytes(string s)
             {
@@ -164,6 +183,7 @@ namespace CounterActor
                 }
             }
 #endif
+
         #endregion
     }
 }

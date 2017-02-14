@@ -5,5 +5,8 @@
     <Parameter Name="CounterStateful_MinReplicaSetSize" Value="3" />
     <Parameter Name="CounterStateful_TargetReplicaSetSize" Value="3" />
     <Parameter Name="CounterStateless_InstanceCount" Value="-1" />
+    <Parameter Name="CounterActorService_PartitionCount" Value="10" />
+    <Parameter Name="CounterActorService_MinReplicaSetSize" Value="3" />
+    <Parameter Name="CounterActorService_TargetReplicaSetSize" Value="3" />
   </Parameters>
 </Application>

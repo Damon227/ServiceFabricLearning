@@ -1,29 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
+﻿// ***********************************************************************
+// Solution         : ServiceFabricLearning
+// Project          : CounterActor.Interfaces
+// File             : ICounterActor.cs
+// Created          : 2017-02-14  2:36 PM
+// ***********************************************************************
+// <copyright>
+//     Copyright © 2016 Kolibre Credit Team. All rights reserved.
+// </copyright>
+// ***********************************************************************
+
 using System.Threading.Tasks;
 using Microsoft.ServiceFabric.Actors;
 
 namespace CounterActor.Interfaces
 {
     /// <summary>
-    /// This interface defines the methods exposed by an actor.
-    /// Clients use this interface to interact with the actor that implements it.
+    ///     This interface defines the methods exposed by an actor.
+    ///     Clients use this interface to interact with the actor that implements it.
     /// </summary>
     public interface ICounterActor : IActor
     {
-        /// <summary>
-        /// TODO: Replace with your own actor method.
-        /// </summary>
-        /// <returns></returns>
-        Task<int> GetCountAsync(CancellationToken cancellationToken);
+        Task<string> CountAsync();
 
-        /// <summary>
-        /// TODO: Replace with your own actor method.
-        /// </summary>
-        /// <param name="count"></param>
-        /// <returns></returns>
-        Task SetCountAsync(int count, CancellationToken cancellationToken);
+        Task ResetAsync();
     }
 }

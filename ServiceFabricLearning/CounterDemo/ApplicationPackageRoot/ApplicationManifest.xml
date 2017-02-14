@@ -1,17 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
-<ApplicationManifest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ApplicationTypeName="CounterDemoType" ApplicationTypeVersion="1.17.0" xmlns="http://schemas.microsoft.com/2011/01/fabric">
+<ApplicationManifest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ApplicationTypeName="CounterDemoType" ApplicationTypeVersion="1.27.0" xmlns="http://schemas.microsoft.com/2011/01/fabric">
   <Parameters>
     <Parameter Name="CounterStateful_MinReplicaSetSize" DefaultValue="3" />
     <Parameter Name="CounterStateful_PartitionCount" DefaultValue="1" />
     <Parameter Name="CounterStateful_TargetReplicaSetSize" DefaultValue="3" />
     <Parameter Name="CounterStateless_InstanceCount" DefaultValue="-1" />
+    <Parameter Name="CounterActorService_PartitionCount" DefaultValue="10" />
+    <Parameter Name="CounterActorService_MinReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="CounterActorService_TargetReplicaSetSize" DefaultValue="3" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 
        ServiceManifest.xml file. -->
   <ServiceManifestImport>
-    <ServiceManifestRef ServiceManifestName="CounterStatefulPkg" ServiceManifestVersion="1.6.0" />
+    <ServiceManifestRef ServiceManifestName="CounterActorPkg" ServiceManifestVersion="1.9.0" />
+  </ServiceManifestImport>
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="CounterStatefulPkg" ServiceManifestVersion="1.7.0" />
     <ConfigOverrides />
   </ServiceManifestImport>
   <ServiceManifestImport>
@@ -33,6 +38,11 @@
       <StatelessService ServiceTypeName="CounterStatelessType" InstanceCount="[CounterStateless_InstanceCount]">
         <SingletonPartition />
       </StatelessService>
+    </Service>
+    <Service Name="CounterActorService" GeneratedIdRef="48150487-50e3-4b44-8e82-249e5fc2044a|Persisted">
+      <StatefulService ServiceTypeName="CounterActorServiceType" TargetReplicaSetSize="[CounterActorService_TargetReplicaSetSize]" MinReplicaSetSize="[CounterActorService_MinReplicaSetSize]">
+        <UniformInt64Partition PartitionCount="[CounterActorService_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
+      </StatefulService>
     </Service>
   </DefaultServices>
 </ApplicationManifest>

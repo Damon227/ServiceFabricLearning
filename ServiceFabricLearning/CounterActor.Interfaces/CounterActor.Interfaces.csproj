@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
-    <ProjectGuid>{709A57D1-7BD4-4606-819B-607B948F671C}</ProjectGuid>
+    <ProjectGuid>{2329E121-3FAD-4A1F-95EF-040904718F83}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CounterActor.Interfaces</RootNamespace>

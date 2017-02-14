@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
-    <ProjectGuid>{90FC5149-6CB7-47AE-B675-838D46DF27BE}</ProjectGuid>
+    <ProjectGuid>{DF62D44F-B0B3-488B-9048-AA3577DE593F}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CounterActor</RootNamespace>
@@ -97,7 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CounterActor.Interfaces\CounterActor.Interfaces.csproj">
-      <Project>{709A57D1-7BD4-4606-819B-607B948F671C}</Project>
+      <Project>{2329E121-3FAD-4A1F-95EF-040904718F83}</Project>
       <Name>CounterActor.Interfaces</Name>
     </ProjectReference>
   </ItemGroup>

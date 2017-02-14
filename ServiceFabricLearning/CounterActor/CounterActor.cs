@@ -1,28 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
+﻿// ***********************************************************************
+// Solution         : ServiceFabricLearning
+// Project          : CounterActor
+// File             : CounterActor.cs
+// Created          : 2017-02-14  2:36 PM
+// ***********************************************************************
+// <copyright>
+//     Copyright © 2016 Kolibre Credit Team. All rights reserved.
+// </copyright>
+// ***********************************************************************
+
+using System;
 using System.Threading.Tasks;
+using CounterActor.Interfaces;
 using Microsoft.ServiceFabric.Actors;
 using Microsoft.ServiceFabric.Actors.Runtime;
-using Microsoft.ServiceFabric.Actors.Client;
-using CounterActor.Interfaces;
+using Microsoft.ServiceFabric.Data;
 
 namespace CounterActor
 {
     /// <remarks>
-    /// This class represents an actor.
-    /// Every ActorID maps to an instance of this class.
-    /// The StatePersistence attribute determines persistence and replication of actor state:
-    ///  - Persisted: State is written to disk and replicated.
-    ///  - Volatile: State is kept in memory only and replicated.
-    ///  - None: State is kept in memory only and not replicated.
+    ///     This class represents an actor.
+    ///     Every ActorID maps to an instance of this class.
+    ///     The StatePersistence attribute determines persistence and replication of actor state:
+    ///     - Persisted: State is written to disk and replicated.
+    ///     - Volatile: State is kept in memory only and replicated.
+    ///     - None: State is kept in memory only and not replicated.
     /// </remarks>
     [StatePersistence(StatePersistence.Persisted)]
     internal class CounterActor : Actor, ICounterActor
     {
+        //private IActorTimer _updateTimer;
+
         /// <summary>
-        /// Initializes a new instance of CounterActor
+        ///     Initializes a new instance of CounterActor
         /// </summary>
         /// <param name="actorService">The Microsoft.ServiceFabric.Actors.Runtime.ActorService that will host this actor instance.</param>
         /// <param name="actorId">The Microsoft.ServiceFabric.Actors.ActorId for this actor instance.</param>
@@ -31,41 +41,51 @@ namespace CounterActor
         {
         }
 
+        public async Task<string> CountAsync()
+        {
+            await Task.Delay(TimeSpan.FromSeconds(3));
+
+            ConditionalValue<int> counter = await StateManager.TryGetStateAsync<int>("Counter");
+            int number = counter.HasValue ? counter.Value : 0;
+
+            number++;
+
+            await StateManager.SetStateAsync("Counter", number);
+
+            return $"Current number is {number}, from actor {Id} and partition {ActorService.Context.PartitionId}, replica {ActorService.Context.ReplicaId}";
+        }
+
+        public Task ResetAsync()
+        {
+            return StateManager.SetStateAsync("Counter", 0);
+        }
+
         /// <summary>
-        /// This method is called whenever an actor is activated.
-        /// An actor is activated the first time any of its methods are invoked.
+        ///     This method is called whenever an actor is activated.
+        ///     An actor is activated the first time any of its methods are invoked.
         /// </summary>
         protected override Task OnActivateAsync()
         {
             ActorEventSource.Current.ActorMessage(this, "Actor activated.");
 
-            // The StateManager is this actor's private state store.
-            // Data stored in the StateManager will be replicated for high-availability for actors that use volatile or persisted state storage.
-            // Any serializable object can be saved in the StateManager.
-            // For more information, see https://aka.ms/servicefabricactorsstateserialization
+            //_updateTimer = RegisterTimer(
+            //AutoCountCallbackAsync,                     // Callback method
+            //5,                                          // Parameter to pass to the callback method
+            //TimeSpan.FromSeconds(5),                    // Amount of time to delay before the callback is invoked
+            //TimeSpan.FromSeconds(5));                   // Time interval between invocations of the callback method
 
-            return this.StateManager.TryAddStateAsync("count", 0);
+            return Task.FromResult(0);
         }
 
-        /// <summary>
-        /// TODO: Replace with your own actor method.
-        /// </summary>
-        /// <returns></returns>
-        Task<int> ICounterActor.GetCountAsync(CancellationToken cancellationToken)
+        private Task AutoCountCallbackAsync(object step)
         {
-            return this.StateManager.GetStateAsync<int>("count", cancellationToken);
-        }
+            int number = 0;
+            if (step is int)
+            {
+                number = (int)step;
+            }
 
-        /// <summary>
-        /// TODO: Replace with your own actor method.
-        /// </summary>
-        /// <param name="count"></param>
-        /// <returns></returns>
-        Task ICounterActor.SetCountAsync(int count, CancellationToken cancellationToken)
-        {
-            // Requests are not guaranteed to be processed in order nor at most once.
-            // The update function here verifies that the incoming count is greater than the current count to preserve order.
-            return this.StateManager.AddOrUpdateStateAsync("count", count, (key, value) => count > value ? count : value, cancellationToken);
+            return StateManager.AddOrUpdateStateAsync("Counter", 0, (s, i) => i + number);
         }
     }
 }
