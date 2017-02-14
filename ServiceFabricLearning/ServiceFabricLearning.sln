@@ -7,6 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0 - PPT", "0 - PPT", "{36DB
 	ProjectSection(SolutionItems) = preProject
 		PPT\Service Fabric —— Session 1.pptx = PPT\Service Fabric —— Session 1.pptx
 		PPT\Service Fabric —— Session 2.pptx = PPT\Service Fabric —— Session 2.pptx
+		PPT\Service Fabric —— Session 3.pptx = PPT\Service Fabric —— Session 3.pptx
 	EndProjectSection
 EndProject
 Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "CounterDemo", "CounterDemo\CounterDemo.sfproj", "{112EC4F6-5ACD-410C-A0A5-CAF7DAE1144E}"
